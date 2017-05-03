@@ -21,10 +21,12 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'css-loader'
-        })
+        //use: ['style-loader','css-loader']
+        use: [{
+          loader: 'style-loader'
+        },{
+          loader: 'css-loader'
+        }]
       }
     ]
   }
