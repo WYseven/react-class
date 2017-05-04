@@ -1,13 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-
-
+import TodoList from './views/app';
 
 import './css/base.css'
 import './css/index.css'
 
+let list = [
+  {
+    id: 1,
+    title: "hello1",
+    isSelected: true
+  },
+  {
+    id: 2,
+    title: "hello2",
+    isSelected: true
+  }
+]
+
 ReactDOM.render(
-  <App />,
+  <TodoList list={list} />,
   document.getElementById('root')
 );
