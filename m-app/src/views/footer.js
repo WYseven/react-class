@@ -10,7 +10,7 @@ class Footer extends Component {
         return (
             <footer className="footer">
                 <span className="todo-count">
-                <strong>0</strong>
+                <strong>{this.props.unSelectLen}</strong>
                 <span>条未选中</span>
                 </span>
                 <ul className="filters">
