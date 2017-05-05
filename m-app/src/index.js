@@ -14,7 +14,7 @@ let list = [
   {
     id: 2,
     title: "hello2",
-    isSelected: true
+    isSelected: false
   }
 ]
 

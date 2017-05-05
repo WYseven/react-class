@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Item from './item'
+import Footer from './footer'
 
 class TodoList extends Component {
     constructor(props){
@@ -12,12 +13,19 @@ class TodoList extends Component {
     }
     render(){
 
-        let list = this.state.list,itemNodes,footer;
+        let list = this.state.list,sections,footer;
         if(list.length){
-            itemNodes = list.map((item) => {
-                return <Item key={item.id} />
-            })
-            footer = 2
+            sections = <section className="main">
+                            <input type="checkbox" className="toggle-all" />
+                            <ul className='todo-list'>
+                                {
+                                    list.map((item) => {
+                                        return <Item {...item} key={item.id} />
+                                    })
+                                }
+                            </ul>
+                        </section>
+            footer = <Footer />
         }
 
         return (
@@ -29,9 +37,7 @@ class TodoList extends Component {
                         placeholder="请输入内容"
                     />
                 </header>
-                <ul>
-                    {itemNodes}
-                </ul>
+                {sections}
                 {footer}
             </section>
         )
