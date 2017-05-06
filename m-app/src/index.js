@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TodoList from './views/app';
+// import TodoList from './views/app';
+// import App from './state/app';
+import App from './props/app';
 
 import './css/base.css'
 import './css/index.css'
@@ -19,6 +21,7 @@ let list = [
 ]
 
 ReactDOM.render(
-  <TodoList list={list} />,
+  //<TodoList list={list} />,
+  <App />,
   document.getElementById('root')
 );
