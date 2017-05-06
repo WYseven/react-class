@@ -31,6 +31,8 @@ class Item extends Component {
         },()=>{
             this.editInput.focus()
         })
+
+        this.beforeEditi = this.props.title;
     }
 
 
@@ -59,8 +61,12 @@ class Item extends Component {
 
     editKeyupDone(ev){
         if(ev.keyCode === 13){
-            console.log(123)
             this.editDone()
+        }else if(ev.keyCode === 27){
+            this.setState({
+                editId: null,
+                editText: this.beforeEditi
+            })
         }
     }
 
@@ -70,7 +76,6 @@ class Item extends Component {
     }
 
     render(){
-        console.log(typeof this.props.title)
         return (
             <li className={
                 classNames({
@@ -110,8 +115,8 @@ Item.propTypes = {
     title: PropTypes.string,
     isSelected: PropTypes.bool,
     customProp(props, proName, componentName){
-        console.log(props, proName, componentName)
+        //console.log(props, proName, componentName)
     }
 }
-console.log(Item.props)
+
 export default Item;

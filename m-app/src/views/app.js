@@ -3,19 +3,40 @@ import React, { Component } from 'react';
 import Item from './item'
 import Footer from './footer'
 
+function bind(self){
+    return function(...rest){
+        rest.forEach( (item) =>{
+            self[item] = self[item].bind(self)
+        } )
+    }
+}
+
 class TodoList extends Component {
     constructor(props){
         super(props)
 
         this.state = {
-            list: this.props.list
+            list: this.props.list,
+            nowShowing: 'all'
         }
+        
+        let arr = [
+            'toggleCheckbox',
+            'toggleAllCheckbox',
+            'editDone',
+            'addItemHandle',
+            'hashChangHandle',
+            'clearAll'
+        ]
+        bind(this)(...arr)
 
-        this.toggleCheckbox = this.toggleCheckbox.bind(this)
-        this.toggleAllCheckbox = this.toggleAllCheckbox.bind(this)
-        this.editDone = this.editDone.bind(this)
-        this.destroy = this.destroy.bind(this)
-        this.addItemHandle = this.addItemHandle.bind(this)
+        //this.toggleCheckbox = this.toggleCheckbox.bind(this)
+        //this.toggleAllCheckbox = this.toggleAllCheckbox.bind(this)
+        //this.editDone = this.editDone.bind(this)
+        //this.destroy = this.destroy.bind(this)
+        //this.addItemHandle = this.addItemHandle.bind(this)
+        //this.hashChangHandle = this.hashChangHandle.bind(this)
+        //this.clearAll = this.clearAll.bind(this)
     }
 
     // 勾选单个checkbox
@@ -82,10 +103,41 @@ class TodoList extends Component {
         ev.target.value = '';
     }
 
+    hashChangHandle(){
+        let hash = window.location.hash.slice(2);
+        this.setState({
+            nowShowing: hash
+        })
+    }
+
+    //清除选中的
+    clearAll(){
+        let {list} = this.state;
+        list = list.filter(item => !item.isSelected)
+        this.setState({
+            list: list
+        })
+    }
+
+    componentDidMount(){
+        console.log(123)
+        this.hashChangHandle()
+        window.addEventListener('hashchange', this.hashChangHandle)
+    }
+
     render(){
 
-        let list = this.state.list,sections,footer,num=0;
+        let list = this.state.list,sections,footer,num=0,selectLen = 0;
 
+        let filterList = list.filter((item) => {
+            if(this.state.nowShowing === 'active'){
+                return !item.isSelected
+            } else if(this.state.nowShowing === 'completed'){
+                return item.isSelected
+            }else{
+                return true;
+            }
+        })
 
         if(list.length){
 
@@ -93,6 +145,9 @@ class TodoList extends Component {
             num = list.reduce((n,m)=>{
                 return m.isSelected ? n : ++n;
             },num)
+
+            // 选中的
+            selectLen = list.length - num
 
             sections = <section className="main">
                             <input 
@@ -103,7 +158,7 @@ class TodoList extends Component {
                             />
                             <ul className='todo-list'>
                                 {
-                                    list.map((item) => {
+                                    filterList.map((item) => {
                                         return <Item 
                                                     {...item} 
                                                     key={item.id} 
@@ -115,7 +170,12 @@ class TodoList extends Component {
                                 }
                             </ul>
                         </section>
-            footer = <Footer unSelectLen={num}/>
+            footer = <Footer 
+                        unSelectLen={num} 
+                        selectLen={selectLen} 
+                        nowShowing={this.state.nowShowing} 
+                        clearAll={this.clearAll}
+                     />
         }
 
         return (
